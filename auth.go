@@ -120,6 +120,18 @@ func (a *Authenticator) SetAuthInfo(clientID, secretKey string) {
 	a.config.ClientSecret = secretKey
 }
 
+// SetTokenUrl overwrites the TokenURL used by the authenticator.
+// You can use this to overwrite the token URL for the authorization
+// code flow when you are using an authorization server to protect the
+// client secret. The flow will be that the client will hit this URL
+// with body parameters: grant_type=authorization_code, code=authorization_code returned
+// previously, redirect_uri=same and Authorization Header Bearer: base64(clientId:"")
+// Your authorization server will forward the same request to the spotify token endpoint
+// but with the filled in Bearer header and then return the response to this client
+func (a *Authenticator) SetTokenURL(tokenURL string) {
+	a.config.Endpoint.TokenURL = tokenURL
+}
+
 // AuthURL returns a URL to the the Spotify Accounts Service's OAuth2 endpoint.
 //
 // State is a token to protect the user from CSRF attacks.  You should pass the
